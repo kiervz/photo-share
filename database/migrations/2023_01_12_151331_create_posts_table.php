@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->foreignIdFor(User::class, 'user_id');
             $table->text('description');
             $table->string('photo');
-            $table->decimal('total_votes', 8, 2);
+            $table->decimal('total_votes', 8, 2)->default(0);
             $table->timestamps();
         });
     }

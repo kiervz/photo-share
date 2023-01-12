@@ -36,4 +36,22 @@ class LoginTest extends TestCase
             ]
         ]);
     }
+
+    public function test_if_user_can_logout()
+    {
+        $user = User::factory()->create();
+
+        $credentials = [
+            'email' => $user->email,
+            'password' => 'password'
+        ];
+
+        $data = $this->post(route('auth.login'), $credentials)
+            ->assertSuccessful()
+            ->json();
+
+        $this->post(route('auth.logout'), [], [
+            'Authorization' => "{$data['response']['token_type']} {$data['response']['token']}"
+        ])->assertNoContent();
+    }
 }

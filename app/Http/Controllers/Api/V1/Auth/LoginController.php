@@ -35,4 +35,11 @@ class LoginController extends Controller
 
         return $this->customResponse('Login successfully', $data, Response::HTTP_OK);
     }
+
+    public function logout()
+    {
+        auth()->user()->tokens()->delete();
+
+        return $this->customResponse('Logged out successfully!', [], Response::HTTP_NO_CONTENT);
+    }
 }

@@ -15,6 +15,15 @@ use App\Http\Controllers\Api\V1\Auth\LoginController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::group(['prefix' => 'v1'], function() {
+        Route::group(['prefix' => 'auth'], function() {
+            Route::post('logout', [LoginController::class, 'logout'])->name('auth.logout');
+        });
+    });
+});
+
 Route::group(['prefix' => 'v1'], function() {
     Route::group(['prefix' => 'auth'], function() {
         Route::post('login', [LoginController::class, 'login'])->name('auth.login');

@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\V1\Auth\LoginController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1'], function() {
+    Route::group(['prefix' => 'auth'], function() {
+        Route::post('login', [LoginController::class, 'login'])->name('auth.login');
+    });
 });

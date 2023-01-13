@@ -22,10 +22,16 @@ class VoteController extends Controller
         /** if vote already exist */
         if ($vote) {
             /** check if vote is upvote (1) then delete */
-            if ($vote->vote === 1) $vote->delete();
+            if ($vote->vote === 1) {
+                $vote->delete();
+                $post->update(['total_votes' => ($post->total_votes - 1)]);
+            }
 
             /** check if vote is downvote (-1) then update to upvote (1) */
-            if ($vote->vote === -1) $vote->update(['vote' => 1]);
+            if ($vote->vote === -1) {
+                $vote->update(['vote' => 1]);
+                $post->update(['total_votes' => ($post->total_votes + 1)]);
+            }
         } else {
             /** create new upvote entry */
             Vote::create([
@@ -33,6 +39,8 @@ class VoteController extends Controller
                 'user_id' => Auth::id(),
                 'vote' => 1
             ]);
+
+            $post->update(['total_votes' => ($post->total_votes + 1)]);
         }
 
         return $this->customResponse('success');
@@ -48,10 +56,16 @@ class VoteController extends Controller
         /** if vote already exist */
         if ($vote) {
             /** check if vote is downvote (-1) then delete */
-            if ($vote->vote === -1) $vote->delete();
+            if ($vote->vote === -1) {
+                $vote->delete();
+                $post->update(['total_votes' => ($post->total_votes + 1)]);
+            }
 
             /** check if vote is upvote (1) then update to downvote (-1) */
-            if ($vote->vote === 1) $vote->update(['vote' => -1]);
+            if ($vote->vote === 1) {
+                $vote->update(['vote' => -1]);
+                $post->update(['total_votes' => ($post->total_votes - 1)]);
+            }
         } else {
             /** create new upvote entry */
             Vote::create([
@@ -59,6 +73,8 @@ class VoteController extends Controller
                 'user_id' => Auth::id(),
                 'vote' => -1
             ]);
+
+            $post->update(['total_votes' => ($post->total_votes - 1)]);
         }
 
         return $this->customResponse('success');

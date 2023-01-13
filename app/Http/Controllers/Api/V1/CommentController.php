@@ -43,4 +43,15 @@ class CommentController extends Controller
 
         return $this->customResponse('Successfully updated!', new CommentResource($comment));
     }
+
+    public function destroy(Comment $comment)
+    {
+        if ($comment->user_id != Auth::id()) {
+            return $this->customResponse('Comment not found.', [], Response::HTTP_NOT_FOUND, false);
+        }
+
+        $comment->delete();
+
+        return $this->customResponse('Successfully deleted!', [], Response::HTTP_NO_CONTENT);
+    }
 }

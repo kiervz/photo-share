@@ -59,14 +59,9 @@ class PostController extends Controller
         return $this->customResponse('Successfully fetched!', new PostResource($post));
     }
 
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, Post $post)
     {
-        $post = Post::where([
-            'id' => $id,
-            'user_id' => Auth::id()
-        ])->first();
-
-        if (!$post) {
+        if ($post->user_id != Auth::id()) {
             return $this->customResponse('Post not found.', [], Response::HTTP_NOT_FOUND, false);
         }
 

@@ -12,10 +12,12 @@ class PostTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $user;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->authUser();
+        $this->user = $this->authUser();
     }
 
     public function test_user_can_fetch_all_posts()
@@ -32,5 +34,16 @@ class PostTest extends TestCase
         $post = Post::factory()->create();
 
         $this->get(route('posts.show', $post))->assertSuccessful();
+    }
+
+    public function test_user_can_update_post()
+    {
+        $post = Post::factory()->create(['user_id' => $this->user->id]);
+
+        $this->put(route('posts.update', $post), [
+            'description' => 'updated description'
+        ])->assertOk();
+
+        $this->assertDatabaseHas('posts', ['description' => 'updated description']);
     }
 }

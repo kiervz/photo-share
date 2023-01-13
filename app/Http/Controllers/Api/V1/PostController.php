@@ -69,4 +69,15 @@ class PostController extends Controller
 
         return $this->customResponse('Successfully updated!', new PostResource($post));
     }
+
+    public function destroy(Post $post)
+    {
+        if ($post->user_id != Auth::id()) {
+            return $this->customResponse('Post not found.', [], Response::HTTP_NOT_FOUND, false);
+        }
+
+        $post->delete();
+
+        return $this->customResponse('Successfully deleted!', [], Response::HTTP_NO_CONTENT);
+    }
 }

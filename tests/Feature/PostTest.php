@@ -46,4 +46,14 @@ class PostTest extends TestCase
 
         $this->assertDatabaseHas('posts', ['description' => 'updated description']);
     }
+
+    public function test_user_can_delete_post()
+    {
+        $post = Post::factory()->create(['user_id' => $this->user->id]);
+
+        $this->delete(route('posts.destroy', $post))
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
+    }
 }

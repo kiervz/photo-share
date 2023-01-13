@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use App\Http\Resources\Post\PostResource;
 use App\Http\Resources\Post\PostCollection;
 use App\Http\Requests\Post\StoreRequest;
+use App\Http\Requests\Post\UpdateRequest;
 
 use App\Models\Post;
 
@@ -57,5 +58,21 @@ class PostController extends Controller
     public function show(Post $post)
     {
         return $this->customResponse('Successfully fetched!', new PostResource($post));
+    }
+
+    public function update(UpdateRequest $request, $id)
+    {
+        $post = Post::where([
+            'id' => $id,
+            'user_id' => Auth::id()
+        ])->first();
+
+        if (!$post) {
+            return $this->customResponse('Post not found.', [], Response::HTTP_NOT_FOUND, false);
+        }
+
+        $post->update($request->validated());
+
+        return $this->customResponse('Successfully updated!', new PostResource($post));
     }
 }

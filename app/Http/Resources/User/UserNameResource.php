@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Comment;
+namespace App\Http\Resources\User;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\User\UserNameResource;
 
-class CommentResource extends JsonResource
+class UserNameResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +15,7 @@ class CommentResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'post_id' => $this->post_id,
-            'user' => new UserNameResource($this->user),
-            'text' => $this->text
+            'name' => $this->name
         ];
     }
 }

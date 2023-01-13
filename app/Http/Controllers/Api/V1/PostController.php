@@ -29,8 +29,7 @@ class PostController extends Controller
     {
         $photo = $this->uploadImage($request->photo);
 
-        Post::create([
-            'user_id' => Auth::id(),
+        auth()->user()->posts()->create([
             'description' => $request->description,
             'photo' => $photo
         ]);

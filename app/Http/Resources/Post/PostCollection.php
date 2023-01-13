@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Post;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\Comment\CommentResource;
 
 class PostCollection extends ResourceCollection
 {
@@ -20,7 +21,11 @@ class PostCollection extends ResourceCollection
                     'id' => $request->id,
                     'description' => $request->description,
                     'photo' => $request->photo,
-                    'total_votes' => $request->total_votes
+                    'total_votes' => $request->total_votes,
+                    'comments' => [
+                        'total' => $request->comments->count(),
+                        'data' => CommentResource::collection($request->comments)
+                    ]
                 ];
             }),
             'meta' => [

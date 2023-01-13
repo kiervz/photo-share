@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\VoteController;
+use App\Http\Controllers\Api\V1\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::group(['prefix' => 'v1'], function() {
 
     Route::group(['middleware' => ['auth:sanctum']], function() {
         Route::apiResource('posts', PostController::class);
+        Route::apiResource('comments', CommentController::class)->except(['index', 'show', 'edit']);
 
         Route::post('votes/{post}/up', [VoteController::class, 'upVote'])->name('votes.up');
         Route::post('votes/{post}/down', [VoteController::class, 'downVote'])->name('votes.down');

@@ -48,4 +48,19 @@ class CommentTest extends TestCase
 
         $this->assertDatabaseHas('comments', ['text' => 'updated comment!']);
     }
+
+    public function test_user_can_delete_comment()
+    {
+        $post = Post::factory()->create();
+
+        $comment = Comment::factory()->create([
+            'post_id' => $post->id,
+            'user_id' => $this->user->id
+        ]);
+
+        $this->delete(route('comments.destroy', $comment->id))
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
+    }
 }

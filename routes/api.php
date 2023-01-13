@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\PostController;
+use App\Http\Controllers\Api\V1\VoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,5 +35,8 @@ Route::group(['prefix' => 'v1'], function() {
 
     Route::group(['middleware' => ['auth:sanctum']], function() {
         Route::apiResource('posts', PostController::class);
+
+        Route::post('votes/{post}/up', [VoteController::class, 'upVote'])->name('votes.up');
+        Route::post('votes/{post}/down', [VoteController::class, 'downVote'])->name('votes.down');
     });
 });

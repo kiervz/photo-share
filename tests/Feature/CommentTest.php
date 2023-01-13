@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 use App\Models\Post;
+use App\Models\Comment;
 
 class CommentTest extends TestCase
 {
@@ -30,5 +31,21 @@ class CommentTest extends TestCase
         ])->assertOk();
 
         $this->assertDatabaseHas('comments', ['text' => 'Sample comment text!']);
+    }
+
+    public function test_user_can_update_comment()
+    {
+        $post = Post::factory()->create();
+
+        $comment = Comment::factory()->create([
+            'post_id' => $post->id,
+            'user_id' => $this->user->id
+        ]);
+
+        $this->put(route('comments.update', $comment->id), [
+            'text' => 'updated comment!'
+        ])->assertOk();
+
+        $this->assertDatabaseHas('comments', ['text' => 'updated comment!']);
     }
 }

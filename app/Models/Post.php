@@ -15,4 +15,9 @@ class Post extends Model
         "photo",
         "total_votes"
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

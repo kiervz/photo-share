@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Resources\Post\PostResource;
 use App\Http\Resources\Post\PostCollection;
 use App\Http\Requests\Post\StoreRequest;
 
@@ -51,5 +52,10 @@ class PostController extends Controller
         $file_url = Storage::disk('s3')->url('photos/'.$photoName);
 
         return $photoName;
+    }
+
+    public function show(Post $post)
+    {
+        return $this->customResponse('Successfully fetched!', new PostResource($post));
     }
 }

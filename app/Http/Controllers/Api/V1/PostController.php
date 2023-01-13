@@ -18,9 +18,22 @@ use Image;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::paginate(10);
+        $sort = $request->sort;
+        $paginate = $request->paginate ?? 10;
+
+        $posts = Post::query();
+
+        if ($sort === 'latest') {
+            $posts->latest();
+        } else if ($sort === 'highest-votes') {
+            $posts->orderBy('total_votes', 'DESC');
+        } else if ($sort === 'lowest-votes') {
+            $posts->orderBy('total_votes', 'ASC');
+        }
+
+        $posts = $posts->paginate($paginate);
 
         return $this->customResponse('Successfully fetched!', new PostCollection($posts));
     }

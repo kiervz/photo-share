@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Comment;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\User\UserNameResource;
 
 class CommentResource extends JsonResource
 {
@@ -18,7 +17,7 @@ class CommentResource extends JsonResource
         return [
             'id' => $this->id,
             'post_id' => $this->post_id,
-            'user' => new UserNameResource($this->user),
+            'user' => $this->user->name,
             'text' => $this->text
         ];
     }

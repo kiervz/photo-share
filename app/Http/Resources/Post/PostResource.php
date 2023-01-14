@@ -22,7 +22,7 @@ class PostResource extends JsonResource
                 'name' => $this->user->name
             ],
             'description' => $this->description,
-            'photo' => config('services.ses.endpoint') . $this->photo,
+            'photo' => config('services.s3.endpoint') . $this->photo,
             'total_votes' => $this->total_votes,
             'comments' => [
                 'total' => $this->comments->count(),

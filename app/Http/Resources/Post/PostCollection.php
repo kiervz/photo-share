@@ -24,7 +24,7 @@ class PostCollection extends ResourceCollection
                         'name' => $request->user->name
                     ],
                     'description' => $request->description,
-                    'photo' => config('services.ses.endpoint') . $request->photo,
+                    'photo' => config('services.s3.endpoint') . $request->photo,
                     'total_votes' => $request->total_votes,
                     'comments' => [
                         'total' => $request->comments->count(),

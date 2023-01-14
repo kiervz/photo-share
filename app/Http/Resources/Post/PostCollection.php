@@ -19,7 +19,10 @@ class PostCollection extends ResourceCollection
             'data' => $this->collection->transform(function($request) {
                 return [
                     'id' => $request->id,
-                    'user' => $request->user->name,
+                    'user' => [
+                        'id' => $request->user->id,
+                        'name' => $request->user->name
+                    ],
                     'description' => $request->description,
                     'photo' => config('services.ses.endpoint') . $request->photo,
                     'total_votes' => $request->total_votes,

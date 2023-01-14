@@ -20,7 +20,7 @@ class PostCollection extends ResourceCollection
                 return [
                     'id' => $request->id,
                     'description' => $request->description,
-                    'photo' => $request->photo,
+                    'photo' => config('services.ses.endpoint') . $request->photo,
                     'total_votes' => $request->total_votes,
                     'comments' => [
                         'total' => $request->comments->count(),

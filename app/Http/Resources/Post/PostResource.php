@@ -17,6 +17,7 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'user' => $this->user->name,
             'description' => $this->description,
             'photo' => config('services.ses.endpoint') . $this->photo,
             'total_votes' => $this->total_votes,

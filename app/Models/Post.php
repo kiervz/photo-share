@@ -9,6 +9,10 @@ class Post extends Model
 {
     use HasFactory;
 
+    public const UNVOTE = 0;
+    public const UPVOTE = 1;
+    public const DOWNVOTE = -1;
+
     protected $fillable = [
         "user_id",
         "description",
@@ -18,11 +22,16 @@ class Post extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
     }
 }

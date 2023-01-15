@@ -23,14 +23,16 @@ class PostController extends Controller
         $sort = $request->sort;
         $paginate = $request->paginate ?? 10;
 
-        $posts = Post::query();
+        $posts = Post::with(['comments', 'votes' => function($query) {
+            $query->where('user_id', auth()->id());
+        }]);
 
         if ($sort === 'latest') {
-            $posts->latest();
+            $posts = $posts->latest();
         } else if ($sort === 'highest-votes') {
-            $posts->orderBy('total_votes', 'DESC');
+            $posts = $posts->orderBy('total_votes', 'DESC');
         } else if ($sort === 'lowest-votes') {
-            $posts->orderBy('total_votes', 'ASC');
+            $posts = $posts->orderBy('total_votes', 'ASC');
         }
 
         $posts = $posts->paginate($paginate);
@@ -67,8 +69,13 @@ class PostController extends Controller
         return $photoName;
     }
 
-    public function show(Post $post)
+    public function show($post)
     {
+        $post = Post::where('id', $post)
+        ->with(['comments', 'votes' => function($query) {
+            $query->where('user_id', auth()->id());
+        }])->first();
+
         return $this->customResponse('Successfully fetched!', new PostResource($post));
     }
 

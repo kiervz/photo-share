@@ -27,7 +27,9 @@ class PostResource extends JsonResource
             'comments' => [
                 'total' => $this->comments->count(),
                 'data' => CommentResource::collection($this->comments)
-            ]
+            ],
+            'votes' => $this->votes,
+            'created_at' => $this->created_at->diffForHumans()
         ];
     }
 }

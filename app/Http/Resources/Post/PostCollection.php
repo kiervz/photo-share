@@ -29,7 +29,9 @@ class PostCollection extends ResourceCollection
                     'comments' => [
                         'total' => $request->comments->count(),
                         'data' => CommentResource::collection($request->comments)
-                    ]
+                    ],
+                    'votes' => $request->votes,
+                    'created_at' => $request->created_at->diffForHumans()
                 ];
             }),
             'meta' => [

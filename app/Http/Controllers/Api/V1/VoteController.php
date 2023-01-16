@@ -12,6 +12,12 @@ use Auth;
 
 class VoteController extends Controller
 {
+    /**
+     * Upvote the specified Post
+     *
+     * @param  App\Models\Post $post
+     * @return \Illuminate\Http\Response
+     */
     public function upVote(Post $post)
     {
         $status = Post::UNVOTE;
@@ -20,28 +26,28 @@ class VoteController extends Controller
             'user_id' => Auth::id()
         ])->first();
 
-        /** if vote already exist */
+        /** If vote already exist. */
         if ($vote) {
-            /** check if vote is upvote (1) then delete */
-            if ($vote->vote === 1) $vote->delete();
+            /** Check if vote is upvote (1) then delete. */
+            if ($vote->vote === Post::UPVOTE) $vote->delete();
 
-            /** check if vote is downvote (-1) then update to upvote (1) */
-            if ($vote->vote === -1) {
-                $vote->update(['vote' => 1]);
+            /** check if vote is downvote (-1) then update to upvote (1). */
+            if ($vote->vote === Post::DOWNVOTE) {
+                $vote->update(['vote' => Post::UPVOTE]);
                 $status = Post::UPVOTE;
             }
         } else {
-            /** create new upvote entry */
+            /** Create new upvote entry. */
             Vote::create([
                 'post_id' => $post->id,
                 'user_id' => Auth::id(),
-                'vote' => 1
+                'vote' => Post::UPVOTE
             ]);
 
             $status = Post::UPVOTE;
         }
 
-        /** update post's total votes */
+        /** Update post's total votes. */
         $post->update(['total_votes' => $post->votes->sum('vote')]);
 
         return $this->customResponse('success', [
@@ -50,6 +56,12 @@ class VoteController extends Controller
         ]);
     }
 
+    /**
+     * Downvote the specified Post
+     *
+     * @param  App\Models\Post $post
+     * @return \Illuminate\Http\Response
+     */
     public function downVote(Post $post)
     {
         $status = Post::UNVOTE;
@@ -58,28 +70,28 @@ class VoteController extends Controller
             'user_id' => Auth::id()
         ])->first();
 
-        /** if vote already exist */
+        /** If vote already exist. */
         if ($vote) {
-            /** check if vote is downvote (-1) then delete */
-            if ($vote->vote === -1) $vote->delete();
+            /** Check if vote is downvote (-1) then delete. */
+            if ($vote->vote === Post::DOWNVOTE) $vote->delete();
 
-            /** check if vote is upvote (1) then update to downvote (-1) */
-            if ($vote->vote === 1) {
-                $vote->update(['vote' => -1]);
+            /** Check if vote is upvote (1) then update to downvote (-1) */
+            if ($vote->vote === Post::UPVOTE) {
+                $vote->update(['vote' => Post::DOWNVOTE]);
                 $status = Post::DOWNVOTE;
             }
         } else {
-            /** create new upvote entry */
+            /** Create new upvote entry. */
             Vote::create([
                 'post_id' => $post->id,
                 'user_id' => Auth::id(),
-                'vote' => -1
+                'vote' => Post::DOWNVOTE
             ]);
 
             $status = Post::DOWNVOTE;
         }
 
-        /** update post's total votes */
+        /** Update post's total votes. */
         $post->update(['total_votes' => $post->votes->sum('vote')]);
 
         return $this->customResponse('success', [

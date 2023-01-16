@@ -12,6 +12,12 @@ use App\Models\User;
 
 class RegisterController extends Controller
 {
+    /**
+     * Handle the users registration.
+     *
+     * @param  App\Http\Requests\Auth\RegisterRequest $request
+     * @return \Illuminate\Http\Response
+     */
     public function register(RegisterRequest $request)
     {
         User::create([

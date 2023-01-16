@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'text' => 'required|string|max:255'
+            'text' => 'required|string|max:500'
         ];
     }
 }

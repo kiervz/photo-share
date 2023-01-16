@@ -25,7 +25,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'post_id' => 'required|integer',
-            'text' => 'required|string|max:255'
+            'text' => 'required|string|max:500'
         ];
     }
 }

@@ -14,6 +14,12 @@ use Auth;
 
 class LoginController extends Controller
 {
+    /**
+     * Handle the users authentication
+     *
+     * @param  App\Http\Requests\Auth\LoginRequest $request
+     * @return \Illuminate\Http\Response
+     */
     public function login(LoginRequest $request)
     {
         $email = $request->input('email');
@@ -21,7 +27,9 @@ class LoginController extends Controller
 
         $credentials = ['email' => $email, 'password' => $password];
 
+        /** Validate the user based on user's credentials */
         if (Auth::validate($credentials)) {
+            /** Get user based on email. */
             $user = User::where('email', $email)->first();
 
             $data = [
@@ -36,6 +44,11 @@ class LoginController extends Controller
         return $this->customResponse('Login successfully', $data, Response::HTTP_OK);
     }
 
+    /**
+     * Logout the authenticated users.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function logout()
     {
         auth()->user()->tokens()->delete();

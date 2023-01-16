@@ -4,7 +4,7 @@ This is the Backend API of a fullstack Photo Sharing web app built with React, T
 
 Check the demo deployed at AWS EC2 (free tier): http://54.179.174.127
 
-The Frontend of this API can be found [here](https://github.com/kiervz/photo-share).
+The Frontend of this API can be found [here](https://github.com/kiervz/photo-sharer-fe).
 
 ----------
 

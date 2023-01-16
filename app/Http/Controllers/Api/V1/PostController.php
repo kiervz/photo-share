@@ -29,6 +29,8 @@ class PostController extends Controller
 
         if ($sort === 'latest') {
             $posts = $posts->latest();
+        } else if ($sort === 'oldest') {
+            $posts = $posts->oldest();
         } else if ($sort === 'highest-votes') {
             $posts = $posts->orderBy('total_votes', 'DESC');
         } else if ($sort === 'lowest-votes') {

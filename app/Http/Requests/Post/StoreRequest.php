@@ -24,8 +24,8 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => 'required|max:255',
-            'photo' => 'mimes:jpeg,jpg,png|max:2000'
+            'description' => 'required|max:500',
+            'photo' => 'mimes:jpeg,jpg,png|max:2048'
         ];
     }
 }

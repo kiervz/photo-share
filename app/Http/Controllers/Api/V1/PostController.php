@@ -18,6 +18,11 @@ use Image;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        if (auth('sanctum')->check()) $this->middleware('auth:sanctum');
+    }
+
     public function index(Request $request)
     {
         /** Ordering the data. Default value is 'latest' */
@@ -103,13 +108,13 @@ class PostController extends Controller
      * @param  int $post
      * @return \Illuminate\Http\Response
      */
-    public function show($post)
+    public function show($id)
     {
         /**
          * Get a specific post with comments and vote from logged in users
          * in order to bind the color of upvote and downvote in the front end.
          */
-        $post = Post::where('id', $post)->with(['comments', 'votes' => function($query) {
+        $post = Post::where('id', $id)->with(['comments', 'votes' => function($query) {
             $query->where('user_id', auth()->id());
         }])->first();
 

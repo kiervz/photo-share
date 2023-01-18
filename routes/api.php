@@ -34,8 +34,11 @@ Route::group(['prefix' => 'v1'], function() {
         Route::post('register', [RegisterController::class, 'register'])->name('auth.register');
     });
 
+    Route::get('posts', [PostController::class, 'index'])->name('posts.index');
+    Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
+
     Route::group(['middleware' => ['auth:sanctum']], function() {
-        Route::apiResource('posts', PostController::class)->except(['edit']);
+        Route::apiResource('posts', PostController::class)->except(['edit', 'index', 'show']);
         Route::apiResource('comments', CommentController::class)->except(['index', 'show', 'edit']);
 
         Route::post('votes/{post}/up', [VoteController::class, 'upVote'])->name('votes.up');
